@@ -1,23 +1,202 @@
 <!DOCTYPE HTML>
 <html>
-	<head>	
-		<meta charset="utf-8" />
-		<title>Simple HTML</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!-- LOAD Tone.js from unpkg -->
-		<script src="http://unpkg.com/tone"></script>
-		<script>
-			function playNote() {
-				// create a synth
-				const synth = new Tone.Synth().toDestination();
-				// play a note from that synth
-				synth.triggerAttackRelease("C4", "8n");
-			}
-		</script>
-
-	</head>
-	<body>
-		<h1>Simple HTML5 Tone.js Demo</h1>
-		<button onclick="playNote()">Click me to play note!</button>
-	</body>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script src="http://unpkg.com/tone"></script>
+	<script src="js/jquery-3.6.0.min.js" ></script>
+	<script src="js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap-icons.css  " type="text/css" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<title>.:ATG - Chords:.</title>
+  </head>
+<body onload="check_input()">
+<div class="row">
+	<div class="col-6 offset-3">
+		<div class="card">
+			<div class="card card-heading bg-primary text-white text-bold">ATG - Chords</div>
+			<div class="card card-body">
+				<label for="input_area" class="form-label">Input area</label>
+				<textarea name="input_area" id="input_area" class="form-control" rows="5" onchange="check_input()"></textarea>
+				<label for="input_type" class="form-label">Type of string</label>
+				<select name="input_type" id="input_type" class="form-select">
+					<option value="protein">Protein</option>
+					<option value="codon">Codon</option>
+					<option value="text">Plain text</option>
+					<option value="long text">Long text</option>
+				</select>
+			</div>
+			<div class="card card-footer">
+				<div id="play_button" name="play_button" class="btn btn-primary bi bi-music-note-list">Play me!</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
 </html>
+<script>
+function check_input(){
+	var input_type = $("#input_type").val();
+	var input_string = $("#input_area").val().trim().replace(/\s/g,"");
+	if(input_string == ""){
+		$("#play_button").attr("disabled",true).prop("disabled",true).attr("onclick","");
+		}
+	else{
+		$("#play_button").attr("disabled",false).prop("disabled",false).attr("onclick","play_me('"+input_string+"','"+input_type+"')");
+		}
+	}
+function play_me(input_string,input_type) {
+	input_string = input_string.toUpperCase();
+	input_string = input_string.trim();
+	input_string = input_string.replace(/[^a-zA-Z0-9 ]/g, "");
+	var input_arr ;
+	var char_arr  ;
+	var note_arr  ;
+	if (input_type=="protein"){
+		input_string = input_string.replace(/\s/g,"");
+		input_string = input_string.replace(/(\r\n|\n|\r)/gm,"");
+		input_arr = input_string.split("");
+		char_arr = ["A", "C", "D", "E", "F", "G", "H",
+		            "I", "K", "L", "M", "N", "P", "Q",
+					"R", "S", "T", "V", "W", "Y" ] ;
+		note_arr = ["A3","B3","C3","D3","E3","F3","G3",
+		            "A4","B4","C4","D4","E4","F4","G4",
+					"A5","B5","C5","D5","E5","F5"] ;
+		}
+	else if(input_type == "codon"){
+		input_string = input_string.replace(/\s/g,"");
+		input_string = input_string.replace(/(\r\n|\n|\r)/gm,"");
+		input_arr = input_string.match(/.{1,3}/g) ;
+		char_arr = ["AAA","AAC","AAG","AAT","ACA","ACC","ACG",
+		            "ACT","AGA","AGC","AGG","AGT","ATA","ATC",
+					"ATG","ATT","CAA","CAC","CAG","CAT","CCA",
+					"CCC","CCG","CCT","CGA","CGC","CGG","CGT",
+					"CTA","CTC","CTG","CTT","GAA","GAC","GAG",
+					"GAT","GCA","GCC","GCG","GCT","GGA","GGC",
+					"GGG","GGT","GTA","GTC","GTG","GTT","TAA",
+					"TAC","TAG","TAT","TCA","TCC","TCG","TCT",
+					"TGA","TGC","TGG","TGT","TTA","TTC","TTG",
+					"TTT"]
+		note_arr = ["A1", "B1", "C1", "D1", "E1", "F1", "G1",
+		            "A2", "B2", "C2", "D2", "E2", "F2", "G2",
+					"A3", "B3", "C3", "D3", "E3", "F3", "G3",
+					"A4", "B4", "C4", "D4", "E4", "F4", "G4",
+					"A5", "B5", "C5", "D5", "E5", "F5", "G5",
+					"A6", "B6", "C6", "D6", "E6", "F6", "G6",
+					"A7", "B7", "C7", "D7", "E7", "F7", "G7",
+					"A8", "B8", "C8", "D8", "E8", "F8", "G8",
+					"A9", "B9", "C9", "D9", "E9", "F9", "G9",
+					"A10"]
+		}
+	else if(input_type == "text"){
+		input_arr = input_string.split("");
+		char_arr = ["A", "B", "C", "D", "E", "F", "G", 
+		            "H", "I", "J", "K", "L", "M", "N",
+					"O", "P", "Q", "R", "S", "T", "U",
+					"V", "W", "X", "Y", "Z" ] ;
+		note_arr = ["A3","B3","C3","D3","E3","F3","G3",
+		            "A4","B4","C4","D4","E4","F4","G4",
+					"A5","B5","C5","D5","E5","F5","G5",
+					"A6","B6","C6","D6","E6"] ;
+		}
+	else if(input_type == "long text"){
+		char_arr = ["A", "B", "C", "D", "E", "F", "G", 
+		            "H", "I", "J", "K", "L", "M", "N",
+					"O", "P", "Q", "R", "S", "T", "U",
+					"V", "W", "X", "Y", "Z" ] ;
+		note_arr = ["A3","B3","C3","D3","E3","F3","G3",
+		            "A4","B4","C4","D4","E4","F4","G4",
+					"A5","B5","C5","D5","E5","F5","G5",
+					"A6","B6","C6","D6","E6"] ;
+		var chord_arr = []
+		input_string = input_string.replace(/(\r\n|\n|\r)/gm," ");
+		text_arr  = input_string.split(" ");
+		var word  = "";
+		for (let i = 0; i < text_arr.length; i++) {
+			word = text_arr[i]
+			syl_arr = get_syllables(word);
+			for (let j = 0; j < syl_arr.length; j++){
+				var chord = [];
+				syl_str = syl_arr[j];
+				syl_char_arr = syl_str.split("")
+				for (let k = 0; k < syl_char_arr.length; k++){
+					char_val   = syl_char_arr[k]
+					char_index = char_arr.indexOf(char_val);
+					char_note  = note_arr[char_index]
+					chord.push(char_note);
+					}
+				chord_arr.push(chord)
+				}
+			}
+		}
+	var counter = 0 ;
+	if(input_type!="long text"){
+		input_arr.forEach(get_note);
+		}
+	else{
+		const synth = new Tone.PolySynth().toDestination();
+		const now = Tone.now()
+		for (let l = 0 ; l < chord_arr.length ; l++){
+			cur_chord = chord_arr[l];
+			synth.triggerAttackRelease(cur_chord, "8n", now + counter)
+			counter += 0.25 ;
+			}
+		}
+	function get_note(input_val){
+		const synth = new Tone.AMSynth().toDestination();
+		const now = Tone.now()
+		var input_index = char_arr.indexOf(input_val);
+		note_val = note_arr[input_index];
+		synth.triggerAttackRelease(note_val, "8n", now + counter)
+		counter += 0.25 ;
+		}
+	}
+function get_syllables(word){
+	var response = [];
+	var is_special_case = false;
+	var nums = (word.match(/[aeiou]/gi) || []).length;
+	if (is_special_case == false && (word.match(/[0123456789]/gi) || []).length == word.length ){
+		response.push(word);
+		is_special_case = true;
+		}
+	if (is_special_case == false && word.length < 4){
+		response.push(word);
+		is_special_case = true;
+		}
+	if (is_special_case == false && word.charAt(word.length-1) == "e"){
+		if (is_vowel(word.charAt(word.length-2)) == false){
+			var cnt = (word.match(/[aeiou]/gi) || []).length;
+			if (cnt == 3){
+				if (hasDoubleVowels(word)){
+					response.push(word);
+					is_special_case = true;
+					}
+				}
+			if (cnt == 2){
+				if (hasRecurringConsonant(word) == false) {
+					response.push(word);
+					is_special_case = true;
+					}
+				}
+			}
+		}
+	if (is_special_case == false){
+		const syllableRegex = /[^aeiouy]*[aeiouy]+(?:[^aeiouy]*$|[^aeiouy](?=[^aeiouy]))?/gi;
+		response = word.match(syllableRegex);
+		}
+	return response;
+	}
+function is_vowel(character){
+	const vowels = ["A", "E", "I", "O", "U", "Y"];
+	if (vowels.includes(character)){
+		ret_val = true ;
+		}
+	else{
+		ret_val = false ;
+		}
+	return ret_val ;
+	}
+</script>
