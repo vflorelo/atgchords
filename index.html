@@ -142,7 +142,7 @@ function play_me(input_string,input_type) {
 		for (let l = 0 ; l < chord_arr.length ; l++){
 			cur_chord = chord_arr[l];
 			synth.triggerAttackRelease(cur_chord, "8n", now + counter)
-			counter += 0.25 ;
+			counter += 0.3 ;
 			}
 		}
 	function get_note(input_val){
@@ -151,7 +151,7 @@ function play_me(input_string,input_type) {
 		var input_index = char_arr.indexOf(input_val);
 		note_val = note_arr[input_index];
 		synth.triggerAttackRelease(note_val, "8n", now + counter)
-		counter += 0.25 ;
+		counter += 0.3 ;
 		}
 	}
 function get_syllables(word){
