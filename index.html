@@ -134,24 +134,24 @@ function play_me(input_string,input_type) {
 		}
 	var counter = 0 ;
 	if(input_type!="long text"){
-		input_arr.forEach(get_note);
+		const synth = new Tone.Synth().toDestination();
+		const now = Tone.now()
+		for (let l = 0 ; l < input_arr.length ; l++){
+			var input_val   = input_arr[l];
+			var input_index = char_arr.indexOf(input_val);
+			note_val = note_arr[input_index];
+			synth.triggerAttackRelease(note_val, "8n", now + counter)
+			counter += 0.3 ;
+			}
 		}
 	else{
 		const synth = new Tone.PolySynth().toDestination();
 		const now = Tone.now()
-		for (let l = 0 ; l < chord_arr.length ; l++){
-			cur_chord = chord_arr[l];
+		for (let m = 0 ; m < chord_arr.length ; m++){
+			cur_chord = chord_arr[m];
 			synth.triggerAttackRelease(cur_chord, "8n", now + counter)
 			counter += 0.3 ;
 			}
-		}
-	function get_note(input_val){
-		const synth = new Tone.AMSynth().toDestination();
-		const now = Tone.now()
-		var input_index = char_arr.indexOf(input_val);
-		note_val = note_arr[input_index];
-		synth.triggerAttackRelease(note_val, "8n", now + counter)
-		counter += 0.3 ;
 		}
 	}
 function get_syllables(word){
